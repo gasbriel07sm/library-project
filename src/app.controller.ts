@@ -11,7 +11,7 @@ export class AppController {
   @Get()
   @ApiResponse({
     status: HttpStatus.OK,
-    description: '  HealthCheck', 
+    description: 'HealthCheck', 
     schema: {
       type: 'object',
       properties: {

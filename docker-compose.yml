@@ -1,15 +1,18 @@
+# docker-compose.yml
 services:
+  # serviço de banco de dados
   db:
     image: postgres:16
-    container_name: library_project_db
+    container_name: library_project_db 
     restart: always
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: library_project
+      POSTGRES_USER: postgres # usuário do banco
+      POSTGRES_PASSWORD: postgres # senha (em produção utilizar algo mais seguro)
+      POSTGRES_DB: library_project # nome do banco
     ports:
-      - "5433:5432"
+      - "5435:5432" # porta padrão do PostgreSQL
     volumes:
+      # serve para garantir que os dados persistam mesmo se o container parar
       - pgdata:/var/lib/postgresql/data
 
 volumes:
