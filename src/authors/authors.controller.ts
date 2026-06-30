@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common'
+import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, ParseUUIDPipe, Post, Put } from '@nestjs/common'
 import { AuthorsService } from './authors.service'
 import { CreateAuthorDTO } from './dto/createAuthorDTO'
 import { UpdateAuthorDTO } from './dto/updateAuthorDTO'
@@ -31,7 +31,8 @@ export class AuthorsController {
   }
 
   @Delete(':id')
-  remove(@Param('id', ParseUUIDPipe) id: string) {
-    return this.authorsService.remove(id)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  async remove(@Param('id', ParseUUIDPipe) id: string) {
+    await this.authorsService.remove(id)
   }
 }

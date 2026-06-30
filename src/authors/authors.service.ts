@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateAuthorDTO } from './dto/createAuthorDTO';
 import { UpdateAuthorDTO } from './dto/updateAuthorDTO';
@@ -12,9 +12,13 @@ export class AuthorsService {
     }
   
     async findOne(id: string) {
-      return await this.prisma.author.findFirst({
+      const author = await this.prisma.author.findUnique({
         where: { id },
       })
+
+      if (!author) throw new NotFoundException('Author not exist')
+      
+      return author 
     }
   
     async create(data: CreateAuthorDTO) {
@@ -24,6 +28,8 @@ export class AuthorsService {
     }
   
     async update(id: string, data: UpdateAuthorDTO) {
+      await this.findOne(id)
+
       return await this.prisma.author.update({
         where: { id },
         data,
@@ -31,7 +37,9 @@ export class AuthorsService {
     }
   
     async remove(id: string) {
-      return await this.prisma.author.delete({
+      await this.findOne(id)
+
+      await this.prisma.author.delete({
         where: { id },
       })
     }
